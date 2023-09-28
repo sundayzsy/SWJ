@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QByteArray>
 #include <QSerialPortInfo>
@@ -547,6 +547,30 @@ void MainWindow::decodeProtocol1(QByteArray readData)
         //uint32_t ColBin_SIZE_par
         in >> nValue;
         ui->R_21->setText(QString::number(revert32(nValue)));
+
+        //float k_phi_xz1
+        in >> nValue;
+        ui->R_22->setText(QString::number(revert32(nValue)));
+    }
+    else if(m_readP1Addr == 608)
+    {
+        //uint32_t k_phi_xz2
+        in >> nValue;
+        ui->R_23->setText(QString::number(revert32(nValue)));
+
+        //float k_phi_yz1
+        in >> nValue;
+        ui->R_24->setText(QString::number(revert32(nValue)));
+    }
+    else if(m_readP1Addr == 616)
+    {
+        //uint32_t k_phi_yz2
+        in >> nValue;
+        ui->R_25->setText(QString::number(revert32(nValue)));
+
+        //float beta_0
+        in >> nValue;
+        ui->R_26->setText(QString::number(revert32(nValue)));
     }
 }
 
@@ -729,15 +753,37 @@ void MainWindow::encodeProtocol1()
     setProgress(++nCount);
 
     //uint32_t ColBin_SIZE_par; // 50-60 默认55
+    //float k_phi_xz1;
     regAddr = 600;
     value1 = ui->W_21->text().toUInt();
-    value2 = 0;
+    value2 = FloatToByte4(ui->W_22->text().toFloat());
     packingProtocol1(regAddr,value1,value2,writeData);
     sendData(writeData);
     writeData.clear();
     setProgress(++nCount);
-    endProgress();
 
+    //float k_phi_xz2;
+    //float k_phi_yz1;
+    regAddr = 608;
+    value1 = FloatToByte4(ui->W_23->text().toFloat());
+    value2 = FloatToByte4(ui->W_24->text().toFloat());
+    packingProtocol1(regAddr,value1,value2,writeData);
+    sendData(writeData);
+    writeData.clear();
+    setProgress(++nCount);
+
+    //float k_phi_yz2;
+    //float beta_0;
+    regAddr = 616;
+    value1 = FloatToByte4(ui->W_25->text().toFloat());
+    value2 = FloatToByte4(ui->W_26->text().toFloat());
+    packingProtocol1(regAddr,value1,value2,writeData);
+    sendData(writeData);
+    writeData.clear();
+    setProgress(++nCount);
+
+
+    endProgress();
     //读取设备数据
     readProtocol1();
 }
@@ -799,6 +845,16 @@ void MainWindow::readProtocol1()
     packingReadProtocol1(m_readP1Addr, writeReadData);
     sendData(writeReadData);
     writeReadData.clear();
+
+    m_readP1Addr = 608;
+    packingReadProtocol1(m_readP1Addr, writeReadData);
+    sendData(writeReadData);
+    writeReadData.clear();
+
+    m_readP1Addr = 616;
+    packingReadProtocol1(m_readP1Addr, writeReadData);
+    sendData(writeReadData);
+    writeReadData.clear();
 }
 
 void MainWindow::encodeProtocol2(QQueue<QByteArray> packageQueue)
@@ -846,9 +902,7 @@ void MainWindow::packingProtocol1(quint16 regAddr, quint32 value1, quint32 value
     out << regAddr;  //寄存器地址 2Byte
     out << revert32(value1);  //兼容老协议 使用小端存储数据
     out << revert32(value2);  //兼容老协议 使用小端存储数据
-//    quint16 CRC = crc16(writeData,writeData.size());
     quint16 CRC = crc16ForModbus(writeData);
-//    quint16 CRC = ModbusCRC16(writeData);
     out << CRC;
 }
 
@@ -1745,6 +1799,11 @@ void MainWindow::initUI()
     ui->R_21->setEnabled(false);
     ui->W_10->setEnabled(false);
     ui->W_21->setEnabled(false);
+    ui->R_22->setEnabled(false);
+    ui->R_23->setEnabled(false);
+    ui->R_24->setEnabled(false);
+    ui->R_25->setEnabled(false);
+    ui->R_26->setEnabled(false);
     setAllBtnUnenable();
 
     //查找可用的串口
