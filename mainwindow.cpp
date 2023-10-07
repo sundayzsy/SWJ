@@ -550,27 +550,27 @@ void MainWindow::decodeProtocol1(QByteArray readData)
 
         //float k_phi_xz1
         in >> nValue;
-        ui->R_22->setText(QString::number(revert32(nValue)));
+        ui->R_22->setText(QString::number(Byte4ToFloat(revert32(nValue))));
     }
     else if(m_readP1Addr == 608)
     {
-        //uint32_t k_phi_xz2
+        //float k_phi_xz2
         in >> nValue;
-        ui->R_23->setText(QString::number(revert32(nValue)));
+        ui->R_23->setText(QString::number(Byte4ToFloat(revert32(nValue))));
 
         //float k_phi_yz1
         in >> nValue;
-        ui->R_24->setText(QString::number(revert32(nValue)));
+        ui->R_24->setText(QString::number(Byte4ToFloat(revert32(nValue))));
     }
     else if(m_readP1Addr == 616)
     {
-        //uint32_t k_phi_yz2
+        //float k_phi_yz2
         in >> nValue;
-        ui->R_25->setText(QString::number(revert32(nValue)));
+        ui->R_25->setText(QString::number(Byte4ToFloat(revert32(nValue))));
 
         //float beta_0
         in >> nValue;
-        ui->R_26->setText(QString::number(revert32(nValue)));
+        ui->R_26->setText(QString::number(Byte4ToFloat(revert32(nValue))));
     }
     else if(m_readP1Addr == 624)
     {
@@ -580,7 +580,7 @@ void MainWindow::decodeProtocol1(QByteArray readData)
 
         //float Kcor
         in >> nValue;
-        ui->R_28->setText(QString::number(revert32(nValue)));
+        ui->R_28->setText(QString::number(Byte4ToFloat(revert32(nValue))));
     }
     else if(m_readP1Addr == 632)
     {
@@ -590,7 +590,7 @@ void MainWindow::decodeProtocol1(QByteArray readData)
 
         //float MiuAst_PH
         in >> nValue;
-        ui->R_30->setText(QString::number(revert32(nValue)));
+        ui->R_30->setText(QString::number(Byte4ToFloat(revert32(nValue))));
     }
     else if(m_readP1Addr == 640)
     {
@@ -600,7 +600,7 @@ void MainWindow::decodeProtocol1(QByteArray readData)
 
         //float K
         in >> nValue;
-        ui->R_32->setText(QString::number(revert32(nValue)));
+        ui->R_32->setText(QString::number(Byte4ToFloat(revert32(nValue))));
     }
 }
 
