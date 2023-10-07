@@ -572,6 +572,36 @@ void MainWindow::decodeProtocol1(QByteArray readData)
         in >> nValue;
         ui->R_26->setText(QString::number(revert32(nValue)));
     }
+    else if(m_readP1Addr == 624)
+    {
+        //uint32_t R
+        in >> nValue;
+        ui->R_27->setText(QString::number(revert32(nValue)));
+
+        //float Kcor
+        in >> nValue;
+        ui->R_28->setText(QString::number(revert32(nValue)));
+    }
+    else if(m_readP1Addr == 632)
+    {
+        //uint32_t Queue_Size_Lval
+        in >> nValue;
+        ui->R_29->setText(QString::number(revert32(nValue)));
+
+        //float MiuAst_PH
+        in >> nValue;
+        ui->R_30->setText(QString::number(revert32(nValue)));
+    }
+    else if(m_readP1Addr == 640)
+    {
+        //uint32_t LsuK
+        in >> nValue;
+        ui->R_31->setText(QString::number(revert32(nValue)));
+
+        //float K
+        in >> nValue;
+        ui->R_32->setText(QString::number(revert32(nValue)));
+    }
 }
 
 void MainWindow::decodeReadProtocol2Data(QByteArray readData)
@@ -782,6 +812,36 @@ void MainWindow::encodeProtocol1()
     writeData.clear();
     setProgress(++nCount);
 
+    //uint32_t R;   // 默认 564mm
+    //float Kcor;   // 默认 0.0505
+    regAddr = 624;
+    value1 = ui->W_27->text().toUInt();
+    value2 = FloatToByte4(ui->W_28->text().toFloat());
+    packingProtocol1(regAddr,value1,value2,writeData);
+    sendData(writeData);
+    writeData.clear();
+    setProgress(++nCount);
+
+    //uint32_t Queue_Size_Lval;   // 不能超过30默认21
+    //float MiuAst_PH;
+    regAddr = 632;
+    value1 = ui->W_29->text().toUInt();
+    value2 = FloatToByte4(ui->W_30->text().toFloat());
+    packingProtocol1(regAddr,value1,value2,writeData);
+    sendData(writeData);
+    writeData.clear();
+    setProgress(++nCount);
+
+    //uint32_t LsuK;   // 默认20
+    //float K;         // 默认0.1
+    regAddr = 640;
+    value1 = ui->W_31->text().toUInt();
+    value2 = FloatToByte4(ui->W_32->text().toFloat());
+    packingProtocol1(regAddr,value1,value2,writeData);
+    sendData(writeData);
+    writeData.clear();
+    setProgress(++nCount);
+
 
     endProgress();
     //读取设备数据
@@ -852,6 +912,21 @@ void MainWindow::readProtocol1()
     writeReadData.clear();
 
     m_readP1Addr = 616;
+    packingReadProtocol1(m_readP1Addr, writeReadData);
+    sendData(writeReadData);
+    writeReadData.clear();
+
+    m_readP1Addr = 624;
+    packingReadProtocol1(m_readP1Addr, writeReadData);
+    sendData(writeReadData);
+    writeReadData.clear();
+
+    m_readP1Addr = 632;
+    packingReadProtocol1(m_readP1Addr, writeReadData);
+    sendData(writeReadData);
+    writeReadData.clear();
+
+    m_readP1Addr = 640;
     packingReadProtocol1(m_readP1Addr, writeReadData);
     sendData(writeReadData);
     writeReadData.clear();
@@ -1804,6 +1879,12 @@ void MainWindow::initUI()
     ui->R_24->setEnabled(false);
     ui->R_25->setEnabled(false);
     ui->R_26->setEnabled(false);
+    ui->R_27->setEnabled(false);
+    ui->R_28->setEnabled(false);
+    ui->R_29->setEnabled(false);
+    ui->R_30->setEnabled(false);
+    ui->R_31->setEnabled(false);
+    ui->R_32->setEnabled(false);
     setAllBtnUnenable();
 
     //查找可用的串口
