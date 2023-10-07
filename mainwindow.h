@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -92,9 +92,9 @@ private:
 private:
     void initUI();
     void loadFile();
-    void loadFile(const QString &filePath1,const QString &filePath2,const QString &filePath3,
-                  const QString &filePath4,const QString &filePath5,const QString &filePath6,
-                  const QString &filePath7);
+    void loadFile(const QString &filePathHver,const QString &filePathAlphaRad,const QString &filePathdHC,
+                  const QString &filePathVRSBeta,const QString &filePathVRCBeta,const QString &filePathRTSBeta,
+                  const QString &filePathRTCBeta);
     QStringList loadData(const QString &filePath,int &row, int &col);
     bool authCrc(const QByteArray &byteArray);
     quint16 crc16(const QByteArray &byteArray, quint32 byteArraySize);

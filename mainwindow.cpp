@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("上位机");
+    setWindowTitle("上位机     version:2023/10/7");
 //    loadFile();  //放开以后自动加载data
     initUI();
     m_reSendTimer.setInterval(1000);
@@ -344,13 +344,13 @@ void MainWindow::on_btnAuth7_clicked()
 void MainWindow::on_btnReload_clicked()
 {
 //    loadFile();
-    QString filePath1;
-    QString filePath2;
-    QString filePath3;
-    QString filePath4;
-    QString filePath5;
-    QString filePath6;
-    QString filePath7;
+    QString filePathHver;
+    QString filePathAlphaRad;
+    QString filePathdHC;
+    QString filePathVRSBeta;
+    QString filePathVRCBeta;
+    QString filePathRTSBeta;
+    QString filePathRTCBeta;
 
     QString defaultDir = qApp->applicationDirPath() + "/../";
     QString pathDir = QFileDialog::getExistingDirectory(this, tr("开打文件夹"),
@@ -377,37 +377,37 @@ void MainWindow::on_btnReload_clicked()
 //        qDebug() << fileInfo.fileName();
         if(curFileName == "Hver.dat")
         {
-            filePath1 = fileInfo.absoluteFilePath();
+            filePathHver = fileInfo.absoluteFilePath();
             authCounts++;
         }
         if(curFileName == "AlphaRad.dat")
         {
-            filePath2 = fileInfo.absoluteFilePath();
+            filePathAlphaRad = fileInfo.absoluteFilePath();
             authCounts++;
         }
         if(curFileName == "dHC.dat")
         {
-            filePath3 = fileInfo.absoluteFilePath();
+            filePathdHC = fileInfo.absoluteFilePath();
             authCounts++;
         }
-        if(curFileName == "VSRBeta.dat")
+        if(curFileName == "VRSBeta.dat")
         {
-            filePath4 = fileInfo.absoluteFilePath();
+            filePathVRSBeta = fileInfo.absoluteFilePath();
             authCounts++;
         }
-        if(curFileName == "VSCBeta.dat")
+        if(curFileName == "VRCBeta.dat")
         {
-            filePath5 = fileInfo.absoluteFilePath();
+            filePathVRCBeta = fileInfo.absoluteFilePath();
             authCounts++;
         }
         if(curFileName == "RTSBeta.dat")
         {
-            filePath6 = fileInfo.absoluteFilePath();
+            filePathRTSBeta = fileInfo.absoluteFilePath();
             authCounts++;
         }
         if(curFileName == "RTCBeta.dat")
         {
-            filePath7 = fileInfo.absoluteFilePath();
+            filePathRTCBeta = fileInfo.absoluteFilePath();
             authCounts++;
         }
     }
@@ -423,7 +423,7 @@ void MainWindow::on_btnReload_clicked()
         return;
     }
 
-    loadFile(filePath1,filePath2,filePath3,filePath4,filePath5,filePath6,filePath7);
+    loadFile(filePathHver,filePathAlphaRad,filePathdHC,filePathVRSBeta,filePathVRCBeta,filePathRTSBeta,filePathRTCBeta);
     setAllBtnEnable();
 }
 
@@ -1969,7 +1969,7 @@ void MainWindow::loadFile()
         Alpha[i] = str.toFloat();
     }
 
-    filePath = qApp->applicationDirPath() + "/../data/VSRBeta.dat";
+    filePath = qApp->applicationDirPath() + "/../data/VRSBeta.dat";
     strList = loadData(filePath,m_VRSBetaRow,m_VRSBetaCol);
     QString info = "";
     if(authRowCol(m_VRSBetaRow,m_HverSize,m_VRSBetaCol,m_AlphaSize))
@@ -1983,7 +1983,7 @@ void MainWindow::loadFile()
         VRSBeta[i] = str.toFloat();
     }
 
-    filePath = qApp->applicationDirPath() + "/../data/VSCBeta.dat";
+    filePath = qApp->applicationDirPath() + "/../data/VRCBeta.dat";
     strList = loadData(filePath,m_VRCBetaRow,m_VRCBetaCol);
     info = "";
     if(authRowCol(m_VRCBetaRow,m_HverSize,m_VRCBetaCol,m_AlphaSize))
@@ -2040,9 +2040,9 @@ void MainWindow::loadFile()
     }
 }
 
-void MainWindow::loadFile(const QString &filePath1,const QString &filePath2,const QString &filePath3,
-                          const QString &filePath4,const QString &filePath5,const QString &filePath6,
-                          const QString &filePath7)
+void MainWindow::loadFile(const QString &filePathHver,const QString &filePathAlphaRad,const QString &filePathdHC,
+                          const QString &filePathVRSBeta,const QString &filePathVRCBeta,const QString &filePathRTSBeta,
+                          const QString &filePathRTCBeta)
 {
     memset(Hver,0,sizeof(Hver));
     memset(Alpha,0,sizeof(Alpha));
@@ -2054,7 +2054,7 @@ void MainWindow::loadFile(const QString &filePath1,const QString &filePath2,cons
 
     QStringList strList;
 //    QString filePath = qApp->applicationDirPath() + "/../data/Hver.dat";
-    QString filePath = filePath1;
+    QString filePath = filePathHver;
     int row = 0;
     strList = loadData(filePath,row,m_HverSize);
     ui->W_10->setText(QString::number(m_HverSize));
@@ -2066,7 +2066,7 @@ void MainWindow::loadFile(const QString &filePath1,const QString &filePath2,cons
     }
 
 //    filePath = qApp->applicationDirPath() + "/../data/AlphaRad.dat";
-    filePath = filePath2;
+    filePath = filePathAlphaRad;
     strList = loadData(filePath,row,m_AlphaSize);
     ui->W_21->setText(QString::number(m_AlphaSize));
     ui->num2->setText(QString::number(strList.size()));
@@ -2076,10 +2076,25 @@ void MainWindow::loadFile(const QString &filePath1,const QString &filePath2,cons
         Alpha[i] = str.toFloat();
     }
 
-//    filePath = qApp->applicationDirPath() + "/../data/VSRBeta.dat";
-    filePath = filePath3;
-    strList = loadData(filePath,m_VRSBetaRow,m_VRSBetaCol);
+//    filePath = qApp->applicationDirPath() + "/../data/dHC.dat";
+    filePath = filePathdHC;
+    strList = loadData(filePath,m_DHCRow,m_DHCCol);
     QString info = "";
+    if(authRowCol(m_DHCRow,m_HverSize,m_DHCCol,m_AlphaSize))
+        info = QString::number(strList.size());
+    else
+        info = QString("%1(数据行列数不一致)").arg(strList.size());
+    ui->num5->setText(info);
+    for(auto i = 0; i < strList.size(); i++)
+    {
+        QString str = strList.at(i);
+        DHC[i] = str.toFloat();
+    }
+
+//    filePath = qApp->applicationDirPath() + "/../data/VRSBeta.dat";
+    filePath = filePathVRSBeta;
+    strList = loadData(filePath,m_VRSBetaRow,m_VRSBetaCol);
+    info = "";
     if(authRowCol(m_VRSBetaRow,m_HverSize,m_VRSBetaCol,m_AlphaSize))
         info = QString::number(strList.size());
     else
@@ -2104,8 +2119,8 @@ void MainWindow::loadFile(const QString &filePath1,const QString &filePath2,cons
 //        }
 //    }
 
-//    filePath = qApp->applicationDirPath() + "/../data/VSCBeta.dat";
-    filePath = filePath4;
+//    filePath = qApp->applicationDirPath() + "/../data/VRCBeta.dat";
+    filePath = filePathVRCBeta;
     strList = loadData(filePath,m_VRCBetaRow,m_VRCBetaCol);
     info = "";
     if(authRowCol(m_VRCBetaRow,m_HverSize,m_VRCBetaCol,m_AlphaSize))
@@ -2119,23 +2134,9 @@ void MainWindow::loadFile(const QString &filePath1,const QString &filePath2,cons
         VRCBeta[i] = str.toFloat();
     }
 
-//    filePath = qApp->applicationDirPath() + "/../data/dHC.dat";
-    filePath = filePath5;
-    strList = loadData(filePath,m_DHCRow,m_DHCCol);
-    info = "";
-    if(authRowCol(m_DHCRow,m_HverSize,m_DHCCol,m_AlphaSize))
-        info = QString::number(strList.size());
-    else
-        info = QString("%1(数据行列数不一致)").arg(strList.size());
-    ui->num5->setText(info);
-    for(auto i = 0; i < strList.size(); i++)
-    {
-        QString str = strList.at(i);
-        DHC[i] = str.toFloat();
-    }
 
 //    filePath = qApp->applicationDirPath() + "/../data/RTSBeta.dat";
-    filePath = filePath6;
+    filePath = filePathRTSBeta;
     strList = loadData(filePath,m_RTSBetaRow,m_RTSBetaCol);
     info = "";
     if(authRowCol(m_RTSBetaRow,m_HverSize,m_RTSBetaCol,m_AlphaSize))
@@ -2150,7 +2151,7 @@ void MainWindow::loadFile(const QString &filePath1,const QString &filePath2,cons
     }
 
 //    filePath = qApp->applicationDirPath() + "/../data/RTCBeta.dat";
-    filePath = filePath7;
+    filePath = filePathRTCBeta;
     strList = loadData(filePath,m_RTCBetaRow,m_RTCBetaCol);
     info = "";
     if(authRowCol(m_RTCBetaRow,m_HverSize,m_RTCBetaCol,m_AlphaSize))
