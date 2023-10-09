@@ -25,6 +25,7 @@ private slots:
     void slot_errorOccurred(QSerialPort::SerialPortError error);
     void on_btnConnect_clicked();
     void on_btnSend_clicked();
+    void on_btnRead_clicked();
     void on_btnAuth_clicked();
     void on_btnExit_clicked();
     void slot_timeout();

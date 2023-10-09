@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>767</height>
+    <height>771</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1504,6 +1504,19 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnRead">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>读取</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="btnSend">

@@ -182,6 +182,15 @@ void MainWindow::on_btnSend_clicked()
     encodeProtocol1();
 }
 
+void MainWindow::on_btnRead_clicked()
+{
+    if(!m_pSerialPort->isOpen())
+        return;
+
+    //读取设备数据
+    readProtocol1();
+}
+
 void MainWindow::on_btnAuth_clicked()
 {
     if(!m_pSerialPort->isOpen())
