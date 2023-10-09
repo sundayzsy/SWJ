@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("上位机     version:2023/10/7");
+    setWindowTitle("上位机     version:2023/10/9");
 //    loadFile();  //放开以后自动加载data
     initUI();
     m_reSendTimer.setInterval(1000);
@@ -611,6 +611,16 @@ void MainWindow::decodeProtocol1(QByteArray readData)
         in >> nValue;
         ui->R_32->setText(QString::number(Byte4ToFloat(revert32(nValue))));
     }
+    else if(m_readP1Addr == 648)
+    {
+        //float Alpha_0
+        in >> nValue;
+        ui->R_33->setText(QString::number(Byte4ToFloat(revert32(nValue))));
+
+        //float Alpha_1
+        in >> nValue;
+        ui->R_34->setText(QString::number(Byte4ToFloat(revert32(nValue))));
+    }
 }
 
 void MainWindow::decodeReadProtocol2Data(QByteArray readData)
@@ -851,6 +861,16 @@ void MainWindow::encodeProtocol1()
     writeData.clear();
     setProgress(++nCount);
 
+    //float Alpha_0;
+    //float Alpha_1;
+    regAddr = 648;
+    value1 = FloatToByte4(ui->W_33->text().toFloat());
+    value2 = FloatToByte4(ui->W_34->text().toFloat());
+    packingProtocol1(regAddr,value1,value2,writeData);
+    sendData(writeData);
+    writeData.clear();
+    setProgress(++nCount);
+
 
     endProgress();
     //读取设备数据
@@ -936,6 +956,11 @@ void MainWindow::readProtocol1()
     writeReadData.clear();
 
     m_readP1Addr = 640;
+    packingReadProtocol1(m_readP1Addr, writeReadData);
+    sendData(writeReadData);
+    writeReadData.clear();
+
+    m_readP1Addr = 648;
     packingReadProtocol1(m_readP1Addr, writeReadData);
     sendData(writeReadData);
     writeReadData.clear();
@@ -1894,6 +1919,8 @@ void MainWindow::initUI()
     ui->R_30->setEnabled(false);
     ui->R_31->setEnabled(false);
     ui->R_32->setEnabled(false);
+    ui->R_33->setEnabled(false);
+    ui->R_34->setEnabled(false);
     setAllBtnUnenable();
 
     //查找可用的串口

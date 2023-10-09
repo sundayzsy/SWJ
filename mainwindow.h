@@ -128,7 +128,6 @@ private:
     float DHC[RowBin_SIZE * ColBin_SIZE];     // 60*50
     float RTSBeta[RowBin_SIZE * ColBin_SIZE]; // 60*50
     float RTCBeta[RowBin_SIZE * ColBin_SIZE]; // 60*50
-//    double RTCBeta[RowBin_SIZE][ColBin_SIZE]; // 60*50
 
     int m_HverSize=0; //row
     int m_AlphaSize=0;//col
